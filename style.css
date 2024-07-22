@@ -33,11 +33,11 @@ body {
 }
 
 .hex.blocked {
-    background-color: #333;
+    background-color: orange;
 }
 
 .hex.cat {
-    background-color: orange;
+    background-color: yellow;
 }
 
 #reset-button {
