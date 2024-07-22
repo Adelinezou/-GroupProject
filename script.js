@@ -30,17 +30,17 @@ function setRandBoard() {
 }
 
 function createBoard() {
-    gameBoard.innerHTML = '';  // Clear the game board.
+    gameBoard.innerHTML = '';
     for (let row = 0; row < boardSize; row++) {
         for (let col = 0; col < boardSize; col++) {
-            const hex = document.createElement('div');  // Create a new div element for each cell.
-            hex.classList.add('hex');  // Add the 'hex' class to the cell.
-            hex.dataset.row = row;  // Set the row data attribute.
-            hex.dataset.col = col;  // Set the column data attribute.
-            if (row % 2 !== 0 && col === boardSize ) {
-                hex.style.visibility = 'hidden';  // Hide the extra cell in odd rows to create a hexagonal layout.
+            const hex = document.createElement('div');
+            hex.classList.add('hex');
+            hex.dataset.row = row;
+            hex.dataset.col = col;
+            if (row % 2 ==0){
+                hex.style.marginLeft = '25px';
             }
-            gameBoard.appendChild(hex);  // Add the cell to the game board.
+            gameBoard.appendChild(hex);
         }
     }
 }
