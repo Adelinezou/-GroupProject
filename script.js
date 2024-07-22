@@ -61,6 +61,9 @@ function updateBoard() {
         hex.classList.remove('cat', 'blocked');  // Remove any previous 'cat' or 'blocked' classes.
         if (catPosition.x === row && catPosition.y === col) {
             hex.classList.add('cat');  // Add the 'cat' class if this cell is the cat's position.
+            const catImg = document.createElement('img');
+            catImg.src = 'BeeA1.png';
+            hex.appendChild(catImg);
         } else if (blockedCells.some(cell => cell.x === row && cell.y === col)) {
             hex.classList.add('blocked');  // Add the 'blocked' class if this cell is blocked.
         }
