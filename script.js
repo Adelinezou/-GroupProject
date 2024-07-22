@@ -37,13 +37,15 @@ function createBoard() {
             hex.classList.add('hex');  // Add the 'hex' class to the cell.
             hex.dataset.row = row;  // Set the row data attribute.
             hex.dataset.col = col;  // Set the column data attribute.
-            if (row % 2 !== 0 && col === boardSize ) {
-                hex.style.visibility = 'hidden';  // Hide the extra cell in odd rows to create a hexagonal layout.
+            if (row % 2 == 0) {
+                hex.style.marginLeft = "25px";
             }
+
             gameBoard.appendChild(hex);  // Add the cell to the game board.
         }
     }
 }
+
 
 function resetGame() {
     setRandBoard();  // Set 6 random tiles as blocked.
