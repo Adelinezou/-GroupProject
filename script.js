@@ -1,14 +1,15 @@
-const boardSize = 11;
-const gameBoard = document.getElementById('game-board');
-const resetButton = document.getElementById('reset-button');
 
-let catPosition = { x: 5, y: 5 };
-let blockedCells = [];
+const boardSize = 11; //set a constant value boardSize to 11
+const gameBoard = document.getElementById('game-board'); //get references to the HTML elements
+const resetButton = document.getElementById('reset-button');//same with above
 
+let catPosition = { x: 5, y: 5 };//set cat position to the middle
+let blockedCells = [];//set array blockedCells
+//a function that generate a random number using a input "max" 
 function randInt(max) {
     return Math.floor(Math.random() * max);
 }
-
+//set 6 random tiles in the begainning 
 function setRandBoard() {
     blockedCells = [];
     const totalCells = boardSize * boardSize;
@@ -25,7 +26,7 @@ function setRandBoard() {
         blockedCells.push(positions[i]);
     }
 }
-
+//create the game board
 function createBoard() {
     gameBoard.innerHTML = '';
     for (let row = 0; row < boardSize; row++) {
@@ -34,21 +35,21 @@ function createBoard() {
             hex.classList.add('hex');
             hex.dataset.row = row;
             hex.dataset.col = col;
-            if (row % 2 !== 0 && col === boardSize - 1) {
+            if (row % 2 !== 0 && col === boardSize) {
                 hex.style.visibility = 'hidden';
             }
             gameBoard.appendChild(hex);
         }
     }
 }
-
+//function to reset the game
 function resetGame() {
     setRandBoard(); // Set 6 random tiles as blocked
     catPosition = { x: 5, y: 5 };
     createBoard();
     updateBoard();
 }
-
+//update the game board when action was taken
 function updateBoard() {
     document.querySelectorAll('.hex').forEach(hex => {
         const row = parseInt(hex.dataset.row);
@@ -61,7 +62,7 @@ function updateBoard() {
         }
     });
 }
-
+//function to ass click event 
 function handleHexClick(event) {
     const hex = event.target.closest('.hex');
     if (!hex) return;
@@ -83,16 +84,18 @@ function moveCat() {
         { dx: 1, dy: 1 },
         { dx: 0, dy: 1 }
     ];
-
+    //add constant avaliableMoves 
     const availableMoves = directions
         .map(d => ({ x: catPosition.x + d.dx, y: catPosition.y + d.dy }))
         .filter(pos => pos.x >= 0 && pos.x < boardSize && pos.y >= 0 && pos.y < boardSize)
         .filter(pos => !blockedCells.some(cell => cell.x === pos.x && cell.y === pos.y));
-
+    //if the availableMoves of the cat is 0, display using alert "you trap the cat"&reset the game
     if (availableMoves.length === 0) {
         alert('You trapped the cat!');
         resetGame();
-    } else {
+    } 
+    //if cat can move move it to random position that it can move 
+    else {
         const nextMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
         catPosition = nextMove;
         if (catPosition.x === 0 || catPosition.x === boardSize - 1 || catPosition.y === 0 || catPosition.y === boardSize - 1) {
@@ -102,8 +105,9 @@ function moveCat() {
     }
     updateBoard();
 }
-
+//if click on reset button, call resetGame function
 resetButton.addEventListener('click', resetGame);
+//if click on the tiles read handleHexClick function
 gameBoard.addEventListener('click', handleHexClick);
-
+//reset the game
 resetGame();
