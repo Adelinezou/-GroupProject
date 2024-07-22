@@ -5,6 +5,27 @@ const resetButton = document.getElementById('reset-button');
 let catPosition = { x: 5, y: 5 };
 let blockedCells = [];
 
+function randInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function setRandBoard() {
+    blockedCells = [];
+    const totalCells = boardSize * boardSize;
+    const positions = Array.from({ length: totalCells }, (_, i) => ({
+        x: Math.floor(i / boardSize),
+        y: i % boardSize
+    }));
+
+    for (let i = positions.length - 1; i > 0; i--) {
+        const j = randInt(i + 1);
+        [positions[i], positions[j]] = [positions[j], positions[i]];
+    }
+    for (let i = 0; i < 6; i++) {
+        blockedCells.push(positions[i]);
+    }
+}
+
 function createBoard() {
     gameBoard.innerHTML = '';
     for (let row = 0; row < boardSize; row++) {
@@ -22,7 +43,7 @@ function createBoard() {
 }
 
 function resetGame() {
-    blockedCells = [];
+    setRandBoard(); // Set 6 random tiles as blocked
     catPosition = { x: 5, y: 5 };
     createBoard();
     updateBoard();
