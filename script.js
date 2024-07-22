@@ -1,113 +1,157 @@
+const boardSize = 11;  // Define the size of the board as 11x11.
+const gameBoard = document.getElementById('game-board');  // Get the game board element from the DOM.
+const resetButton = document.getElementById('reset-button');  // Get the reset button element from the DOM.
 
-const boardSize = 11; //set a constant value boardSize to 11
-const gameBoard = document.getElementById('game-board'); //get references to the HTML elements
-const resetButton = document.getElementById('reset-button');//same with above
+let catPosition = { x: 5, y: 5 };  // Initialize the cat's position in the middle of the board.
+let blockedCells = [];  // Initialize an empty array to store the positions of blocked cells.
 
-let catPosition = { x: 5, y: 5 };//set cat position to the middle
-let blockedCells = [];//set array blockedCells
-//a function that generate a random number using a input "max" 
 function randInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max);  // Generate a random integer from 0 to max-1.
 }
-//set 6 random tiles in the begainning 
+
 function setRandBoard() {
-    blockedCells = [];
-    const totalCells = boardSize * boardSize;
+    blockedCells = [];  // Clear any previously blocked cells.
+    const totalCells = boardSize * boardSize;  // Calculate the total number of cells on the board.
     const positions = Array.from({ length: totalCells }, (_, i) => ({
-        x: Math.floor(i / boardSize),
-        y: i % boardSize
+        x: Math.floor(i / boardSize),  // Calculate the row index.
+        y: i % boardSize  // Calculate the column index.
     }));
 
+    // Shuffle the positions array using Fisher-Yates algorithm.
     for (let i = positions.length - 1; i > 0; i--) {
         const j = randInt(i + 1);
         [positions[i], positions[j]] = [positions[j], positions[i]];
     }
-    for (let i = 0; i < 6; i++) {
+
+    // Take the first 6 shuffled positions and mark them as blocked.
+    for (let i = 0; i < 15; i++) {
         blockedCells.push(positions[i]);
     }
 }
-//create the game board
+
 function createBoard() {
-    gameBoard.innerHTML = '';
+    gameBoard.innerHTML = '';  // Clear the game board.
     for (let row = 0; row < boardSize; row++) {
         for (let col = 0; col < boardSize; col++) {
-            const hex = document.createElement('div');
-            hex.classList.add('hex');
-            hex.dataset.row = row;
-            hex.dataset.col = col;
-            if (row % 2 !== 0 && col === boardSize) {
-                hex.style.visibility = 'hidden';
+            const hex = document.createElement('div');  // Create a new div element for each cell.
+            hex.classList.add('hex');  // Add the 'hex' class to the cell.
+            hex.dataset.row = row;  // Set the row data attribute.
+            hex.dataset.col = col;  // Set the column data attribute.
+            if (row % 2 !== 0 && col === boardSize - 1) {
+                hex.style.visibility = 'hidden';  // Hide the extra cell in odd rows to create a hexagonal layout.
             }
-            gameBoard.appendChild(hex);
+            gameBoard.appendChild(hex);  // Add the cell to the game board.
         }
     }
 }
-//function to reset the game
+
 function resetGame() {
-    setRandBoard(); // Set 6 random tiles as blocked
-    catPosition = { x: 5, y: 5 };
-    createBoard();
-    updateBoard();
+    setRandBoard();  // Set 6 random tiles as blocked.
+    catPosition = { x: 5, y: 5 };  // Reset the cat's position to the middle of the board.
+    createBoard();  // Recreate the game board.
+    updateBoard();  // Update the board with the current state.
 }
-//update the game board when action was taken
+
 function updateBoard() {
     document.querySelectorAll('.hex').forEach(hex => {
         const row = parseInt(hex.dataset.row);
         const col = parseInt(hex.dataset.col);
-        hex.classList.remove('cat', 'blocked');
+        hex.classList.remove('cat', 'blocked');  // Remove any previous 'cat' or 'blocked' classes.
         if (catPosition.x === row && catPosition.y === col) {
-            hex.classList.add('cat');
+            hex.classList.add('cat');  // Add the 'cat' class if this cell is the cat's position.
         } else if (blockedCells.some(cell => cell.x === row && cell.y === col)) {
-            hex.classList.add('blocked');
+            hex.classList.add('blocked');  // Add the 'blocked' class if this cell is blocked.
         }
     });
 }
-//function to ass click event 
+
 function handleHexClick(event) {
-    const hex = event.target.closest('.hex');
-    if (!hex) return;
+    const hex = event.target.closest('.hex');  // Get the clicked cell.
+    if (!hex) return;  // If no cell was clicked, return.
     const row = parseInt(hex.dataset.row);
     const col = parseInt(hex.dataset.col);
-    if (catPosition.x === row && catPosition.y === col) return;
-    blockedCells.push({ x: row, y: col });
-    updateBoard();
-    moveCat();
+    if (catPosition.x === row && catPosition.y === col) return;  // If the cat is in the clicked cell, return.
+    blockedCells.push({ x: row, y: col });  // Add the clicked cell to the blocked cells.
+    updateBoard();  // Update the board.
+    if (!findAvailableRoad(catPosition)) {  // Check if the cat is trapped.
+        alert('You trapped the cat!');  // Alert the user if the cat is trapped.
+        resetGame();  // Reset the game.
+    } else {
+        moveCat();  // Move the cat.
+    }
+}
+
+function findAvailableRoad(start) {
+    const directions = [
+        { dx: -1, dy: 0 }, { dx: -1, dy: -1 }, { dx: 0, dy: -1 },
+        { dx: 1, dy: 0 }, { dx: 1, dy: 1 }, { dx: 0, dy: 1 }
+    ];
+
+    const queue = [start];  // Initialize the BFS queue with the starting position.
+    const visited = new Set([`${start.x},${start.y}`]);  // Mark the starting position as visited.
+
+    while (queue.length > 0) {
+        const { x, y } = queue.shift();  // Get the current position from the queue.
+
+        if (x === 0 || x === boardSize - 1 || y === 0 || y === boardSize - 1) {
+            return true;  // Return true if the current position is on the edge of the board.
+        }
+
+        for (const { dx, dy } of directions) {
+            const newX = x + dx;
+            const newY = y + dy;
+            const newKey = `${newX},${newY}`;
+
+            if (newX >= 0 && newX < boardSize && newY >= 0 && newY < boardSize && !blockedCells.some(cell => cell.x === newX && cell.y === newY) && !visited.has(newKey)) {
+                queue.push({ x: newX, y: newY });  // Add the new position to the queue.
+                visited.add(newKey);  // Mark the new position as visited.
+            }
+        }
+    }
+
+    return false;  // Return false if no path to the edge is found.
 }
 
 function moveCat() {
-    // A simple random move for the cat (you can improve this with actual pathfinding)
     const directions = [
-        { dx: -1, dy: 0 },
-        { dx: -1, dy: -1 },
-        { dx: 0, dy: -1 },
-        { dx: 1, dy: 0 },
-        { dx: 1, dy: 1 },
-        { dx: 0, dy: 1 }
+        { dx: -1, dy: 0 }, { dx: -1, dy: -1 }, { dx: 0, dy: -1 },
+        { dx: 1, dy: 0 }, { dx: 1, dy: 1 }, { dx: 0, dy: 1 }
     ];
-    //add constant avaliableMoves 
-    const availableMoves = directions
-        .map(d => ({ x: catPosition.x + d.dx, y: catPosition.y + d.dy }))
-        .filter(pos => pos.x >= 0 && pos.x < boardSize && pos.y >= 0 && pos.y < boardSize)
-        .filter(pos => !blockedCells.some(cell => cell.x === pos.x && cell.y === pos.y));
-    //if the availableMoves of the cat is 0, display using alert "you trap the cat"&reset the game
-    if (availableMoves.length === 0) {
-        alert('You trapped the cat!');
-        resetGame();
-    } 
-    //if cat can move move it to random position that it can move 
-    else {
-        const nextMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
-        catPosition = nextMove;
-        if (catPosition.x === 0 || catPosition.x === boardSize - 1 || catPosition.y === 0 || catPosition.y === boardSize - 1) {
-            alert('The cat escaped!');
-            resetGame();
+
+    const queue = [[catPosition]];  // Initialize the BFS queue with the path starting at the cat's position.
+    const visited = new Set([`${catPosition.x},${catPosition.y}`]);  // Mark the starting position as visited.
+
+    while (queue.length > 0) {
+        const path = queue.shift();  // Get the current path from the queue.
+        const { x, y } = path[path.length - 1];  // Get the current position from the end of the path.
+
+        if (x === 0 || x === boardSize - 1 || y === 0 || y === boardSize - 1) {
+            catPosition = path[1] || path[0];  // Move the cat to the first step of the path.
+            if (catPosition.x === 0 || catPosition.x === boardSize - 1 || catPosition.y === 0 || catPosition.y === boardSize - 1) {
+                alert('The cat escaped!');  // Alert the user if the cat escaped.
+                resetGame();  // Reset the game.
+            }
+            updateBoard();  // Update the board.
+            return;
+        }
+
+        for (const { dx, dy } of directions) {
+            const newX = x + dx;
+            const newY = y + dy;
+            const newKey = `${newX},${newY}`;
+
+            if (newX >= 0 && newX < boardSize && newY >= 0 && newY < boardSize && !blockedCells.some(cell => cell.x === newX && cell.y === newY) && !visited.has(newKey)) {
+                queue.push([...path, { x: newX, y: newY }]);  // Add the new path to the queue.
+                visited.add(newKey);  // Mark the new position as visited.
+            }
         }
     }
-    updateBoard();
+
+    alert('You trapped the cat!');  // Alert the user if the cat is trapped.
+    resetGame();  // Reset the game.
 }
-//if click on reset button, call resetGame function
-resetButton.addEventListener('click', resetGame);
-//if click on the tiles read handleHexClick function
-gameBoard.addEventListener('click', handleHexClick);
-//reset the game
-resetGame();
+
+resetButton.addEventListener('click', resetGame);  // Add an event listener to the reset button.
+gameBoard.addEventListener('click', handleHexClick);  // Add an event listener to the game board.
+
+resetGame();  // Start the game.
