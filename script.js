@@ -37,7 +37,7 @@ function createBoard() {
             hex.classList.add('hex');  // Add the 'hex' class to the cell.
             hex.dataset.row = row;  // Set the row data attribute.
             hex.dataset.col = col;  // Set the column data attribute.
-            if (row % 2 !== 0 && col === boardSize - 1) {
+            if (row % 2 !== 0 && col === boardSize ) {
                 hex.style.visibility = 'hidden';  // Hide the extra cell in odd rows to create a hexagonal layout.
             }
             gameBoard.appendChild(hex);  // Add the cell to the game board.
