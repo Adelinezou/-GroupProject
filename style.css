@@ -12,41 +12,37 @@ body {
     text-align: center;
 }
 
-.grid {
+.game-board {
     display: grid;
-    grid-template-columns: repeat(11, 40px);
-    grid-template-rows: repeat(11, 40px);
-    gap: 5px;
+    grid-template-columns: repeat(11, 50px);
+    gap: 2px;
+    justify-content: center;
     margin: 20px auto;
+    position: relative;
 }
 
-.cell {
-    width: 40px;
-    height: 40px;
+.hex {
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
-    border: 1px solid #333;
     cursor: pointer;
 }
 
-.cell.blocked {
-    background-color: #555;
+.hex.blocked {
+    background-color: #333;
 }
 
-.cell.cat {
-    background-color: #FFD700;
+.hex.cat {
+    background-color: orange;
 }
 
-#restartButton {
+#reset-button {
     margin: 20px;
     padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
-}
-
-.message {
-    margin-top: 20px;
-    font-size: 1.2rem;
 }
