@@ -24,7 +24,7 @@ body {
 .hex {
     width: 50px;
     height: 50px;
-    background-color: #fff;
+    background-color: #eaa001    ;
     clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
     display: flex;
     justify-content: center;
@@ -32,13 +32,23 @@ body {
     cursor: pointer;
     rotate:90deg;
 }
+.innerHex{
+    width: 40px;
+    height: 40px;
+    background-color: #ffe11d;
+    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
 
 .hex.blocked {
-    background-color: orange;
+    background-color: black;
 }
 
 .hex.cat {
-    background-color: yellow;
+    background-color: brown;
 }
 
 #reset-button {

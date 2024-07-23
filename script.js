@@ -34,14 +34,18 @@ function createBoard() {
     for (let row = 0; row < boardSize; row++) {
         for (let col = 0; col < boardSize; col++) {
             const hex = document.createElement('div');  // Create a new div element for each cell.
+            const innerHex=document.createElement('div');
             hex.classList.add('hex');  // Add the 'hex' class to the cell.
+            innerHex.classList.add('innerHex');
             hex.dataset.row = row;  // Set the row data attribute.
             hex.dataset.col = col;  // Set the column data attribute.
             if (row % 2 == 0) {
                 hex.style.marginLeft = "25px";
+                // innerHex.style.marginLeft = "25px";
             }
 
             gameBoard.appendChild(hex);  // Add the cell to the game board.
+            hex.appendChild(innerHex);
         }
     }
 }
