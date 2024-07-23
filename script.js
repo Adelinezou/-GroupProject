@@ -2,7 +2,7 @@ const boardSize = 11;  // Define the size of the board as 11x11.
 const gameBoard = document.getElementById('game-board');  // Get the game board element from the DOM.
 const resetButton = document.getElementById('reset-button');  // Get the reset button element from the DOM.
 
-let catPosition = { x: 5, y: 5 };  // Initialize the cat's position in the middle of the board.
+let beePosition = { x: 5, y: 5 };  // Initialize the bee's position in the middle of the board.
 let blockedCells = [];  // Initialize an empty array to store the positions of blocked cells.
 
 function randInt(max) {
@@ -48,7 +48,7 @@ function createBoard() {
 
 function resetGame() {
     setRandBoard();  // Set 15 random tiles as blocked.
-    catPosition = { x: 5, y: 5 };  // Reset the cat's position to the middle of the board.
+    beePosition = { x: 5, y: 5 };  // Reset the bee's position to the middle of the board.
     createBoard();  // Recreate the game board.
     updateBoard();  // Update the board with the current state.
 }
@@ -57,14 +57,14 @@ function resetGame() {
 //     document.querySelectorAll('.hex').forEach(hex => {
 //         const row = parseInt(hex.dataset.row);
 //         const col = parseInt(hex.dataset.col);
-//         hex.classList.remove('cat', 'blocked');  // Remove any previous 'cat' or 'blocked' classes.
-//         if (catPosition.x === row && catPosition.y === col) {
-//             hex.classList.add('cat');  // Add the 'cat' class if this cell is the cat's position.
+//         hex.classList.remove('bee', 'blocked');  // Remove any previous 'bee' or 'blocked' classes.
+//         if (beePosition.x === row && beePosition.y === col) {
+//             hex.classList.add('bee');  // Add the 'bee' class if this cell is the bee's position.
 //             hex.innerHTML = ''; // Clear any existing content
-//             // const catImg = document.createElement('img');
-//             // catImg.src = 'BeeA1.png';
-//             // catImg.classList.add('cat-image');
-//             // hex.appendChild(catImg);
+//             // const beeImg = document.createElement('img');
+//             // beeImg.src = 'BeeA1.png';
+//             // beeImg.classList.add('bee-image');
+//             // hex.appendChild(beeImg);
 //         } else {
 //             hex.innerHTML = ''; // Clear any existing content
 //             if (blockedCells.some(cell => cell.x === row && cell.y === col)) {
@@ -79,14 +79,14 @@ function updateBoard() {
     document.querySelectorAll('.hex').forEach(hex => {
         const row = parseInt(hex.dataset.row);
         const col = parseInt(hex.dataset.col);
-        hex.classList.remove('cat', 'blocked');  // Remove any previous 'cat' or 'blocked' classes.
-        if (catPosition.x === row && catPosition.y === col) {
-            hex.classList.add('cat');  // Add the 'cat' class if this cell is the cat's position.
+        hex.classList.remove('bee', 'blocked');  // Remove any previous 'bee' or 'blocked' classes.
+        if (beePosition.x === row && beePosition.y === col) {
+            hex.classList.add('bee');  // Add the 'bee' class if this cell is the bee's position.
             hex.innerHTML = ''; // Clear any existing content
-            //     const catImg = document.createElement('img');
-            //     catImg.src = 'BeeA1.png';
-            //     catImg.classList.add('cat-image');
-            //     hex.appendChild(catImg);
+            //     const beeImg = document.createElement('img');
+            //     beeImg.src = 'BeeA1.png';
+            //     beeImg.classList.add('bee-image');
+            //     hex.appendChild(beeImg);
             var rect = hex.getClientRects()[0];
             positionx = rect.x;
             positiony = rect.y;
@@ -98,16 +98,16 @@ function updateBoard() {
             }
         }
     });
-    var catImg = document.getElementById('cat');
-    if (catImg == null) {
-        catImg = document.createElement('img');
-        catImg.src = 'BeeA1.png';
-        catImg.classList.add('cat-image');
-        catImg.id = 'cat';
-        document.body.appendChild(catImg);
-        console.log("add cat");
+    var beeImg = document.getElementById('bee');
+    if (beeImg == null) {
+        beeImg = document.createElement('img');
+        beeImg.src = 'BeeA1.png';
+        beeImg.classList.add('bee-image');
+        beeImg.id = 'bee';
+        document.body.appendChild(beeImg);
+        console.log("add bee");
     }
-    catImg.style = "position:absolute; width:60px; height:60px; left:" + (positionx) + "px;" + "top:" + (positiony - 10) + "px;";
+    beeImg.style = "position:absolute; width:60px; height:60px; left:" + (positionx) + "px;" + "top:" + (positiony - 10) + "px;";
     console.log("set position:" + positionx + "," + positiony);
 }
 function handleHexClick(event) {
@@ -116,15 +116,15 @@ function handleHexClick(event) {
     const row = parseInt(hex.dataset.row);
     const col = parseInt(hex.dataset.col);
     console.log("clicked " + row + "," + col);
-    if (catPosition.x === row && catPosition.y === col) return;  // If the cat is in the clicked cell, return.
+    if (beePosition.x === row && beePosition.y === col) return;  // If the bee is in the clicked cell, return.
     if (blockedCells.some(cell => cell.x === row && cell.y === col)) return; //****check if the clicked cell is a blocked one****
     blockedCells.push({ x: row, y: col });  // Add the clicked cell to the blocked cells.
     // updateBoard();  // Update the board.
-    if (!findAvailableRoad(catPosition)) {  // Check if the cat is trapped.
-        alert('You trapped the cat!');  // Alert the user if the cat is trapped.
+    if (!findAvailableRoad(beePosition)) {  // Check if the bee is trapped.
+        alert('You trapped the bee!');  // Alert the user if the bee is trapped.
         resetGame();  // Reset the game.
     } else {
-        moveCat();  // Move the cat.
+        movebee();  // Move the bee.
     }
 }
 
@@ -168,7 +168,7 @@ function findAvailableRoad(start) {
     return false;  // Return false if no path to the edge is found.
 }
 
-function moveCat() {
+function movebee() {
     const directions1 = [//row with shift
         { dx: -1, dy: 0 }, { dx: -1, dy: 1 },  //****last row****
         { dx: 0, dy: -1 }, { dx: 0, dy: 1 },   //****current row****
@@ -180,20 +180,20 @@ function moveCat() {
         { dx: 1, dy: -1 }, { dx: 1, dy: 0 }     //****next row****
     ];
     var directions = directions1;
-    if ((catPosition.x + 1) % 2 == 0) //even row, without shift
+    if ((beePosition.x + 1) % 2 == 0) //even row, without shift
         directions = directions2;
 
-    const queue = [[catPosition]];  // Initialize the BFS queue with the path starting at the cat's position.
-    const visited = new Set([`${catPosition.x},${catPosition.y}`]);  // Mark the starting position as visited.
+    const queue = [[beePosition]];  // Initialize the BFS queue with the path starting at the bee's position.
+    const visited = new Set([`${beePosition.x},${beePosition.y}`]);  // Mark the starting position as visited.
 
     while (queue.length > 0) {
         const path = queue.shift();  // Get the current path from the queue.
         const { x, y } = path[path.length - 1];  // Get the current position from the end of the path.
 
         if (x === 0 || x === boardSize - 1 || y === 0 || y === boardSize - 1) {
-            catPosition = path[1] || path[0];  // Move the cat to the first step of the path.
-            if (catPosition.x === 0 || catPosition.x === boardSize - 1 || catPosition.y === 0 || catPosition.y === boardSize - 1) {
-                alert('The cat escaped!');  // Alert the user if the cat escaped.
+            beePosition = path[1] || path[0];  // Move the bee to the first step of the path.
+            if (beePosition.x === 0 || beePosition.x === boardSize - 1 || beePosition.y === 0 || beePosition.y === boardSize - 1) {
+                alert('The bee escaped!');  // Alert the user if the bee escaped.
                 resetGame();  // Reset the game.
             }
             updateBoard();  // Update the board.
@@ -212,7 +212,7 @@ function moveCat() {
         }
     }
 
-    alert('You trapped the cat!');  // Alert the user if the cat is trapped.
+    alert('You trapped the bee!');  // Alert the user if the bee is trapped.
     resetGame();  // Reset the game.
 }
 
