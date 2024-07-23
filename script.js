@@ -34,7 +34,7 @@ function createBoard() {
     for (let row = 0; row < boardSize; row++) {
         for (let col = 0; col < boardSize; col++) {
             const hex = document.createElement('div');  // Create a new div element for each cell.
-            const innerHex=document.createElement('div');
+            const innerHex = document.createElement('div');
             hex.classList.add('hex');  // Add the 'hex' class to the cell.
             innerHex.classList.add('innerHex');
             hex.dataset.row = row;  // Set the row data attribute.
@@ -57,26 +57,6 @@ function resetGame() {
     updateBoard();  // Update the board with the current state.
 }
 
-// function updateBoard() {
-//     document.querySelectorAll('.hex').forEach(hex => {
-//         const row = parseInt(hex.dataset.row);
-//         const col = parseInt(hex.dataset.col);
-//         hex.classList.remove('bee', 'blocked');  // Remove any previous 'bee' or 'blocked' classes.
-//         if (beePosition.x === row && beePosition.y === col) {
-//             hex.classList.add('bee');  // Add the 'bee' class if this cell is the bee's position.
-//             hex.innerHTML = ''; // Clear any existing content
-//             // const beeImg = document.createElement('img');
-//             // beeImg.src = 'BeeA1.png';
-//             // beeImg.classList.add('bee-image');
-//             // hex.appendChild(beeImg);
-//         } else {
-//             hex.innerHTML = ''; // Clear any existing content
-//             if (blockedCells.some(cell => cell.x === row && cell.y === col)) {
-//                 hex.classList.add('blocked');  // Add the 'blocked' class if this cell is blocked.
-//             }
-//         }
-//     });
-// }
 function updateBoard() {
     var positionx = 0;
     var positiony = 0;
@@ -86,12 +66,8 @@ function updateBoard() {
         hex.classList.remove('bee', 'blocked');  // Remove any previous 'bee' or 'blocked' classes.
         if (beePosition.x === row && beePosition.y === col) {
             hex.classList.add('bee');
-              // Add the 'bee' class if this cell is the bee's position.
+            // Add the 'bee' class if this cell is the bee's position.
             hex.innerHTML = ''; // Clear any existing content
-            //     const beeImg = document.createElement('img');
-            //     beeImg.src = 'BeeA1.png';
-            //     beeImg.classList.add('bee-image');
-            //     hex.appendChild(beeImg);
             var rect = hex.getClientRects()[0];
             positionx = rect.x;
             positiony = rect.y;
@@ -104,22 +80,7 @@ function updateBoard() {
         }
     });
     var beeImg = document.getElementById('bee');
-    // if (beeImg == null) {
-    //     // beeImg = document.createElement('img');
-    //     // beeImg.src = 'BeeA1.png';
-    //     // beeImg.classList.add('bee-image');
-    //     // beeImg.id = 'bee';
-    //     // document.body.appendChild(beeImg);
-    //     // console.log("add bee");
-    // }
-    if (positionx === 0 || positionx === boardSize - 1 || positiony === 0 || positiony === boardSize - 1) {
-        // beeImg = document.createElement('img');
-        document.getElementById("bee").src = "BeeA2.png";
-        // beeImg.classList.add('bee-image');
-        // beeImg.id = 'bee';
-        // document.body.appendChild(beeImg);
-        // console.log("add bee");
-    }
+
     beeImg.style = "position:absolute; width:60px; height:60px; left:" + (positionx) + "px;" + "top:" + (positiony - 10) + "px;";
     console.log("set position:" + positionx + "," + positiony);
 }
@@ -134,6 +95,8 @@ function handleHexClick(event) {
     blockedCells.push({ x: row, y: col });  // Add the clicked cell to the blocked cells.
     // updateBoard();  // Update the board.
     if (!findAvailableRoad(beePosition)) {  // Check if the bee is trapped.
+        document.getElementById("bee").src = 'BeeA3.png';
+        updateBoard();
         alert('You trapped the bee!');  // Alert the user if the bee is trapped.
         resetGame();  // Reset the game.
     } else {
@@ -206,7 +169,7 @@ function movebee() {
         if (x === 0 || x === boardSize - 1 || y === 0 || y === boardSize - 1) {
             beePosition = path[1] || path[0];  // Move the bee to the first step of the path.
             if (beePosition.x === 0 || beePosition.x === boardSize - 1 || beePosition.y === 0 || beePosition.y === boardSize - 1) {
-                //beeImg.src = 'BeeA2.png';
+                document.getElementById("bee").src = 'BeeA2.png';
                 updateBoard();
                 alert('The bee escaped!');  // Alert the user if the bee escaped.
                 resetGame();  // Reset the game.
@@ -226,7 +189,8 @@ function movebee() {
             }
         }
     }
-
+    document.getElementById("bee").src = 'BeeA3.png';
+    updateBoard();
     alert('You trapped the bee!');  // Alert the user if the bee is trapped.
     resetGame();  // Reset the game.
 }
