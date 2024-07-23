@@ -40,12 +40,10 @@ function createBoard() {
             if (row % 2 == 0) {
                 hex.style.marginLeft = "25px";
             }
-
             gameBoard.appendChild(hex);  // Add the cell to the game board.
         }
     }
 }
-
 function resetGame() {
     setRandBoard();  // Set 15 random tiles as blocked.
     beePosition = { x: 5, y: 5 };  // Reset the bee's position to the middle of the board.

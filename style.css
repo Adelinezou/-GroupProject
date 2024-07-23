@@ -26,7 +26,7 @@ body {
     height: 50px;
     background-color: #eaa001    ;
     clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -35,9 +35,10 @@ body {
 .innerHex{
     width: 40px;
     height: 40px;
-    background-color: #ffe11d;
+    background-color: #000000;
     clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
-    display: flex;
+    /* display: flex; */
+    position: absolute;
     justify-content: center;
     align-items: center;
     cursor: pointer;
