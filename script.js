@@ -23,7 +23,7 @@ function setRandBoard() {
         [positions[i], positions[j]] = [positions[j], positions[i]];
     }
 
-    // Take the first 6 shuffled positions and mark them as blocked.
+    // Take the first 15 shuffled positions and mark them as blocked.
     for (let i = 0; i < 15; i++) {
         blockedCells.push(positions[i]);
     }
@@ -46,38 +46,80 @@ function createBoard() {
     }
 }
 
-
 function resetGame() {
-    setRandBoard();  // Set 6 random tiles as blocked.
+    setRandBoard();  // Set 15 random tiles as blocked.
     catPosition = { x: 5, y: 5 };  // Reset the cat's position to the middle of the board.
     createBoard();  // Recreate the game board.
     updateBoard();  // Update the board with the current state.
 }
 
+// function updateBoard() {
+//     document.querySelectorAll('.hex').forEach(hex => {
+//         const row = parseInt(hex.dataset.row);
+//         const col = parseInt(hex.dataset.col);
+//         hex.classList.remove('cat', 'blocked');  // Remove any previous 'cat' or 'blocked' classes.
+//         if (catPosition.x === row && catPosition.y === col) {
+//             hex.classList.add('cat');  // Add the 'cat' class if this cell is the cat's position.
+//             hex.innerHTML = ''; // Clear any existing content
+//             // const catImg = document.createElement('img');
+//             // catImg.src = 'BeeA1.png';
+//             // catImg.classList.add('cat-image');
+//             // hex.appendChild(catImg);
+//         } else {
+//             hex.innerHTML = ''; // Clear any existing content
+//             if (blockedCells.some(cell => cell.x === row && cell.y === col)) {
+//                 hex.classList.add('blocked');  // Add the 'blocked' class if this cell is blocked.
+//             }
+//         }
+//     });
+// }
 function updateBoard() {
+    var positionx = 0;
+    var positiony = 0;
     document.querySelectorAll('.hex').forEach(hex => {
         const row = parseInt(hex.dataset.row);
         const col = parseInt(hex.dataset.col);
         hex.classList.remove('cat', 'blocked');  // Remove any previous 'cat' or 'blocked' classes.
         if (catPosition.x === row && catPosition.y === col) {
             hex.classList.add('cat');  // Add the 'cat' class if this cell is the cat's position.
-            const catImg = document.createElement('img');
-            catImg.src = 'BeeA1.png';
-            hex.appendChild(catImg);
-        } else if (blockedCells.some(cell => cell.x === row && cell.y === col)) {
-            hex.classList.add('blocked');  // Add the 'blocked' class if this cell is blocked.
+            hex.innerHTML = ''; // Clear any existing content
+            //     const catImg = document.createElement('img');
+            //     catImg.src = 'BeeA1.png';
+            //     catImg.classList.add('cat-image');
+            //     hex.appendChild(catImg);
+            var rect = hex.getClientRects()[0];
+            positionx = rect.x;
+            positiony = rect.y;
+            console.log("" + row + "," + col + "->" + positionx + "," + positiony + " w,h" + rect.width + "," + rect.height);
+        } else {
+            hex.innerHTML = ''; // Clear any existing content
+            if (blockedCells.some(cell => cell.x === row && cell.y === col)) {
+                hex.classList.add('blocked');  // Add the 'blocked' class if this cell is blocked.
+            }
         }
     });
+    var catImg = document.getElementById('cat');
+    if (catImg == null) {
+        catImg = document.createElement('img');
+        catImg.src = 'BeeA1.png';
+        catImg.classList.add('cat-image');
+        catImg.id = 'cat';
+        document.body.appendChild(catImg);
+        console.log("add cat");
+    }
+    catImg.style = "position:absolute; width:60px; height:60px; left:" + (positionx) + "px;" + "top:" + (positiony - 10) + "px;";
+    console.log("set position:" + positionx + "," + positiony);
 }
-
 function handleHexClick(event) {
     const hex = event.target.closest('.hex');  // Get the clicked cell.
     if (!hex) return;  // If no cell was clicked, return.
     const row = parseInt(hex.dataset.row);
     const col = parseInt(hex.dataset.col);
+    console.log("clicked " + row + "," + col);
     if (catPosition.x === row && catPosition.y === col) return;  // If the cat is in the clicked cell, return.
+    if (blockedCells.some(cell => cell.x === row && cell.y === col)) return; //****check if the clicked cell is a blocked one****
     blockedCells.push({ x: row, y: col });  // Add the clicked cell to the blocked cells.
-    updateBoard();  // Update the board.
+    // updateBoard();  // Update the board.
     if (!findAvailableRoad(catPosition)) {  // Check if the cat is trapped.
         alert('You trapped the cat!');  // Alert the user if the cat is trapped.
         resetGame();  // Reset the game.
@@ -87,10 +129,19 @@ function handleHexClick(event) {
 }
 
 function findAvailableRoad(start) {
-    const directions = [
-        { dx: -1, dy: 0 }, { dx: -1, dy: -1 }, { dx: 0, dy: -1 },
-        { dx: 1, dy: 0 }, { dx: 1, dy: 1 }, { dx: 0, dy: 1 }
+    const directions1 = [//row with shift
+        { dx: -1, dy: 0 }, { dx: -1, dy: 1 },  //****last row****
+        { dx: 0, dy: -1 }, { dx: 0, dy: 1 },   //****current row****
+        { dx: 1, dy: 0 }, { dx: 1, dy: 1 }     //****next row****
     ];
+    const directions2 = [//row without shift
+        { dx: -1, dy: -1 }, { dx: -1, dy: 0 },  //****last row****
+        { dx: 0, dy: -1 }, { dx: 0, dy: 1 },   //****current row****
+        { dx: 1, dy: -1 }, { dx: 1, dy: 0 }     //****next row****
+    ];
+    var directions = directions1;//****
+    if ((start.x + 1) % 2 == 0) //****even row, without shift
+        directions = directions2;//****
 
     const queue = [start];  // Initialize the BFS queue with the starting position.
     const visited = new Set([`${start.x},${start.y}`]);  // Mark the starting position as visited.
@@ -118,10 +169,19 @@ function findAvailableRoad(start) {
 }
 
 function moveCat() {
-    const directions = [
-        { dx: -1, dy: 0 }, { dx: -1, dy: -1 }, { dx: 0, dy: -1 },
-        { dx: 1, dy: 0 }, { dx: 1, dy: 1 }, { dx: 0, dy: 1 }
+    const directions1 = [//row with shift
+        { dx: -1, dy: 0 }, { dx: -1, dy: 1 },  //****last row****
+        { dx: 0, dy: -1 }, { dx: 0, dy: 1 },   //****current row****
+        { dx: 1, dy: 0 }, { dx: 1, dy: 1 }     //****next row****
     ];
+    const directions2 = [//row without shift
+        { dx: -1, dy: -1 }, { dx: -1, dy: 0 },  //****last row****
+        { dx: 0, dy: -1 }, { dx: 0, dy: 1 },   //****current row****
+        { dx: 1, dy: -1 }, { dx: 1, dy: 0 }     //****next row****
+    ];
+    var directions = directions1;
+    if ((catPosition.x + 1) % 2 == 0) //even row, without shift
+        directions = directions2;
 
     const queue = [[catPosition]];  // Initialize the BFS queue with the path starting at the cat's position.
     const visited = new Set([`${catPosition.x},${catPosition.y}`]);  // Mark the starting position as visited.
