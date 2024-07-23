@@ -103,13 +103,21 @@ function updateBoard() {
         }
     });
     var beeImg = document.getElementById('bee');
-    if (beeImg == null) {
-        beeImg = document.createElement('img');
-        beeImg.src = 'BeeA1.png';
-        beeImg.classList.add('bee-image');
-        beeImg.id = 'bee';
-        document.body.appendChild(beeImg);
-        console.log("add bee");
+    // if (beeImg == null) {
+    //     // beeImg = document.createElement('img');
+    //     // beeImg.src = 'BeeA1.png';
+    //     // beeImg.classList.add('bee-image');
+    //     // beeImg.id = 'bee';
+    //     // document.body.appendChild(beeImg);
+    //     // console.log("add bee");
+    // }
+    if (positionx === 0 || positionx === boardSize - 1 || positiony === 0 || positiony === boardSize - 1) {
+        // beeImg = document.createElement('img');
+        document.getElementById("bee").src = "BeeA2.png";
+        // beeImg.classList.add('bee-image');
+        // beeImg.id = 'bee';
+        // document.body.appendChild(beeImg);
+        // console.log("add bee");
     }
     beeImg.style = "position:absolute; width:60px; height:60px; left:" + (positionx) + "px;" + "top:" + (positiony - 10) + "px;";
     console.log("set position:" + positionx + "," + positiony);
@@ -197,13 +205,15 @@ function movebee() {
         if (x === 0 || x === boardSize - 1 || y === 0 || y === boardSize - 1) {
             beePosition = path[1] || path[0];  // Move the bee to the first step of the path.
             if (beePosition.x === 0 || beePosition.x === boardSize - 1 || beePosition.y === 0 || beePosition.y === boardSize - 1) {
+                //beeImg.src = 'BeeA2.png';
+                updateBoard();
                 alert('The bee escaped!');  // Alert the user if the bee escaped.
                 resetGame();  // Reset the game.
+                return;
             }
             updateBoard();  // Update the board.
             return;
         }
-
         for (const { dx, dy } of directions) {
             const newX = x + dx;
             const newY = y + dy;
