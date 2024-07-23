@@ -85,7 +85,8 @@ function updateBoard() {
         const col = parseInt(hex.dataset.col);
         hex.classList.remove('bee', 'blocked');  // Remove any previous 'bee' or 'blocked' classes.
         if (beePosition.x === row && beePosition.y === col) {
-            hex.classList.add('bee');  // Add the 'bee' class if this cell is the bee's position.
+            hex.classList.add('bee');
+              // Add the 'bee' class if this cell is the bee's position.
             hex.innerHTML = ''; // Clear any existing content
             //     const beeImg = document.createElement('img');
             //     beeImg.src = 'BeeA1.png';
