@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honey The Bee</title>
+    <style>
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 1200px; /* Change the height of the whole buttons */
+    align-items: center;
+}
+
+#flex {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.link {
+    position: relative;
+    background-color: blue;
+    height: 200px;
+    width: 400px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    text-decoration: none;
+    color: white;
+    font-family: sans-serif;
+    font-size: 24px;
+    margin: 20px;
+    animation-name: shrink;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.link:hover {
+    animation-name: grow;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes grow {
+    from {
+        width: 400px;
+        height: 200px;
+        background-color: black;
+    }
+    to {
+        width: 450px;
+        height: 250px;
+        background-color: yellow;
+    }
+}
+
+@keyframes shrink {
+    from {
+        width: 450px;
+        height: 250px;
+        background-color: yellow;
+    }
+    to {
+        width: 400px;
+        height: 200px;
+        background-color: black;
+    }
+}
+
+.link img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Size of image in the button */
+    border-radius: 20px;
+}
+
+.link .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 30px;
+    font-family: sans-serif;
+    opacity: 0; /* Hidden to later show text */
+    transition: opacity 0.3s;
+    border-radius: 20px;
+}
+
+.link:hover .overlay {
+    opacity: 1; /* Show text on hover */
+}
+
+.title {
+    font-family: sans-serif;
+    font-size: 50px;
+    color: black;
+    animation: titleAnimation 5s infinite;
+    margin-top: 20px;
+}
+
+@keyframes titleAnimation {
+    0% {
+        color: black;
+        transform: translateY(-20px);
+        font-weight: bold;
+    }
+    50% {
+        color: black;
+        transform: translateY(-10px);
+        font-weight: bold;
+    }
+    100% {
+        color: black;
+        transform: translateY(-20px);
+        font-weight: bold;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="title">More Games</div>
+    <div id="flex">
+        <a href="Connect4.html" class="link">
+            <img src="Connect4.png" alt="Connect 4">
+            <div class="overlay">Connect 4</div>
+        </a>
+        <a href="RockPaperScissors.html" class="link">
+            <img src="RockPaperScissors.png" alt="Rock Paper Scissors">
+            <div class="overlay">Rock Paper Scissors</div>
+        </a>
+        <a href="snowman.html" class="link">
+            <img src="BuildASnowman.png" alt="Build A Snowman">
+            <div class="overlay">Build A Snowman</div>
+        </a>
+        <a href="index.html" class="link">
+            <img src="TTT.png" alt="Tic Tac Toe">
+            <div class="overlay">Tic Tac Toe</div>
+        </a>
+    </div>
+</body>
+</html>
