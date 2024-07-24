@@ -1,0 +1,84 @@
+body {
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+#myBtn{
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    border-radius:50%;
+    color:black;
+    font-size:30px;
+    background-color: #eaa001;
+
+}
+.container {
+    text-align: center;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.logo {
+    width: 225px; /* Adjust the width as needed */
+    height: 150px; /* Adjust the height as needed */
+    margin-right: 5px; /* Adjust the spacing between the logo and the title */
+}
+
+.logo, .title{
+    margin-left: -80px;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(11, 50px);
+    gap: 2px;
+    justify-content: center;
+    margin: 10px auto;
+    position: relative;
+}
+
+.hex {
+    width: 50px;
+    height: 50px;
+    background-color: #eaa001    ;
+    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    rotate:90deg;
+}
+
+
+.hex.blocked {
+    background-color: black;
+}
+
+.hex.cat {
+    background-color: brown;
+}
+
+#reset-button {
+    margin: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.bee img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Allows clicking through the image */
+    rotate: 270deg;
+}
