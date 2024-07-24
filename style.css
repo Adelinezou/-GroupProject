@@ -1,5 +1,4 @@
 body {
-    display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -24,25 +23,24 @@ body {
 .hex {
     width: 50px;
     height: 50px;
-    background-color: #eaa001    ;
+    background-color: #eaa001;
     clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
-    /* display: flex; */
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    rotate:90deg;
-}
-.innerHex{
-    width: 40px;
-    height: 40px;
-    background-color: #000000;
-    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
-    /* display: flex; */
-    position: absolute;
+    display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     rotate: 90deg;
+}
+
+.innerHex {
+    width: 40px;
+    height: 40px;
+    background-color: #ffe11d;
+    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 .hex.blocked {
@@ -69,4 +67,46 @@ body {
     pointer-events: none;
     /* Allows clicking through the image */
     rotate: 270deg;
+}
+
+#game {
+    text-align: center;
+    /* Center align images */
+    margin-top: 20px;
+    /* Space between reset button and images */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+img {
+    height: 100px;
+    width: 100px;
+
+}
+
+.TypeOfGame {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(254, 255, 217);
+    max-width: 600px;
+    border-radius: 5px;
+    display: block;
+}
+
+.TypeOfGame:hover {
+    background-color: rgb(142, 168, 255);
+}
+
+a {
+    color: black;
+}
+
+.name {
+    background-color: black;
+    padding: 10px;
+    color: white
 }
