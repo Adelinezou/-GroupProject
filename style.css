@@ -42,6 +42,7 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    rotate: 90deg;
 }
 
 .hex.blocked {
